@@ -14,6 +14,7 @@ public abstract class Entity {
     private WeaponType weapon;
     private int teamId;
     private boolean isStunned = false;
+    private boolean hasMovedTooMuch = false;
 
     public Entity(int x, int y, int health, int armor, int armorAgainstMagic, int agility, int movementSpeed,
                   WeaponType weapon, int teamId) {
@@ -36,11 +37,14 @@ public abstract class Entity {
         }
         int distanceMoved = Math.abs(this.x - x) + Math.abs(this.y - y);
         if (distanceMoved > movementSpeed) {
-            System.out.printf("Cannot move " + this + " more than " + movementSpeed + " units");
+            System.out.println("Cannot move " + this + " more than " + movementSpeed + " units");
             return;
         }
-        if (x < 1 || x > 30 || y < 1 || y > 30) {
-            System.out.printf("Cannot move " + this + " outside the battlefield");
+        if (distanceMoved > movementSpeed / 2) {
+            hasMovedTooMuch = true;
+        }
+        if (x < 1 || x > 80 || y < 1 || y > 80) {
+            System.out.println("Cannot move " + this + " outside the battlefield");
             return;
         }
         this.x = x;
@@ -62,18 +66,22 @@ public abstract class Entity {
 
     public int attack(Entity target, WeaponType weapon) {
         if (isStunned) {
-            System.out.printf(this + " cannot attack while stunned");
+            System.out.println(this + " cannot attack while stunned");
             return 0;
         }
         if (!inRange(target)) {
-            System.out.printf("Target " + target + "is out of range for " + this + " to attack");
+            System.out.println("Target " + target + "is out of range for " + this + " to attack");
             return 0;
         }
         if (!target.isAlive()) {
-            System.out.printf(this + " cannot attack a dead entity " + target);
+            System.out.println(this + " cannot attack a dead entity " + target);
             return 0;
         }
-        if (Math.random() < weapon.getHitChance() * (1 - target.getAgility() / 100.0)){
+        if (hasMovedTooMuch) {
+            System.out.println(this + " cannot attack after moving");
+            return 0;
+        }
+        if (isStunned || (Math.random() < weapon.getHitChance() * (1 - target.getAgility() / 100.0))) {
             int damage = weapon.getRandomDamage();
             target.takeDamage(damage, weapon);
             return damage;
@@ -106,6 +114,7 @@ public abstract class Entity {
         if (isStunned && Math.random() < 0.5) {
             isStunned = false;
         }
+        hasMovedTooMuch = false;
     }
 
     @Override

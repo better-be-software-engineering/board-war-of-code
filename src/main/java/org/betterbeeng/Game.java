@@ -5,7 +5,7 @@ import org.betterbeeng.player.ActionDecision;
 import org.betterbeeng.player.ActionType;
 import org.betterbeeng.player.Player;
 import org.betterbeeng.player.AiPlayer;
-import org.betterbeeng.player.HumanPlayer;
+import org.betterbeeng.player.human.HumanPlayer;
 import org.betterbeeng.player.MoveDecision;
 import org.betterbeeng.entity.Archer;
 import org.betterbeeng.entity.Entity;
@@ -29,14 +29,30 @@ public class Game {
         teamBEntities = new ArrayList<>();
 
         for (int i = 0; i < 10; i++) {
-            teamAEntities.add(new Mage(1, i + 10, 1));
-            teamAEntities.add(new Archer(2, i + 10, 1));
-            teamAEntities.add(new Warrior(3, i + 10, 1));
+            teamAEntities.add(new Mage(20, i + 20, 1));
+            teamAEntities.add(new Mage(20, i + 20, 1));
+            teamAEntities.add(new Archer(20, i + 20, 1));
+            teamAEntities.add(new Archer(20, i + 20, 1));
+            teamAEntities.add(new Warrior(20, i + 20, 1));
+            teamAEntities.add(new Warrior(20, i + 20, 1));
 
-            teamBEntities.add(new Warrior(28, i + 10, 2));
-            teamBEntities.add(new Archer(29, i + 10, 2));
-            teamBEntities.add(new Mage(30, i + 10, 2));
+            teamBEntities.add(new Warrior(55, i + 20, 2));
+            teamBEntities.add(new Warrior(55, i + 20, 2));
+            teamBEntities.add(new Archer(58, i + 20, 2));
+            teamBEntities.add(new Archer(58, i + 20, 2));
+            teamBEntities.add(new Mage(60, i + 20, 2));
+            teamBEntities.add(new Mage(60, i + 20, 2));
         }
+
+        for (int i = 0; i < 7; i++) {
+            teamBEntities.add(new Warrior(56, i + 20, 2));
+            teamBEntities.add(new Archer(57, i + 20, 2));
+            teamBEntities.add(new Mage(59, i + 20, 2));
+            teamBEntities.add(new Warrior(56, i + 20, 2));
+            teamBEntities.add(new Archer(57, i + 20, 2));
+            teamBEntities.add(new Mage(59, i + 20, 2));
+        }
+
 
         JFrame frame = new JFrame("Game Display");
         gameDisplay = new GameDisplay(teamAEntities, teamBEntities);
@@ -48,8 +64,11 @@ public class Game {
 
     @SneakyThrows
     public void start() {
+        Thread.sleep(3000);
         while (!teamAEntities.isEmpty() && !teamBEntities.isEmpty()) {
             GameState gameState = new GameState(teamAEntities, teamBEntities);
+            playerA.turnStarts(gameState);
+            playerB.turnStarts(gameState);
 
             for (Entity entity : teamAEntities) {
                 MoveDecision moveDecision = playerA.decideMove(gameState, entity);
@@ -159,7 +178,8 @@ public class Game {
     }
 
     private void logAction(Entity entity, String action) {
-        System.out.println(entity.getClass().getSimpleName() + " at (" + entity.getX() + ", " + entity.getY() + ") " + action);
+        System.out.println(entity.getClass().getSimpleName() + " team " + entity.getTeamId()
+                + " at (" + entity.getX() + ", " + entity.getY() + ") " + action);
     }
 
     private void displayStatus() {
@@ -178,9 +198,9 @@ public class Game {
 
     private void oldschoolCommandLineDisplay() {
         // Log the whole game field
-        String[][] grid = new String[30][30];
-        for (int i = 0; i < 30; i++) {
-            for (int j = 0; j < 30; j++) {
+        String[][] grid = new String[80][80];
+        for (int i = 0; i < 80; i++) {
+            for (int j = 0; j < 80; j++) {
                 grid[i][j] = "  ";
             }
         }
@@ -194,8 +214,8 @@ public class Game {
             grid[entity.getX() - 1][entity.getY() - 1] = symbol;
         }
 
-        for (int i = 0; i < 30; i++) {
-            for (int j = 0; j < 30; j++) {
+        for (int i = 0; i < 80; i++) {
+            for (int j = 0; j < 80; j++) {
                 System.out.print(grid[i][j] + " ");
             }
             System.out.println();
@@ -203,8 +223,8 @@ public class Game {
     }
 
     public static void main(String[] args) {
-        Player playerA = new AiPlayer();
-        Player playerB = new AiPlayer();
+        Player playerA = new HumanPlayer(1);
+        Player playerB = new AiPlayer(2);
         Game game = new Game(playerA, playerB);
         game.start();
     }

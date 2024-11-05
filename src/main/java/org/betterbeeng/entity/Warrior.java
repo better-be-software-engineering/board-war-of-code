@@ -10,7 +10,7 @@ public class Warrior extends Entity {
 
     public int stun(Entity entity) {
         if (rage < 1) {
-            System.out.printf(this + "doesn't have enough rage to stun " + entity);
+            System.out.println(this + "doesn't have enough rage to stun " + entity);
             return 0;
         }
         int damages = attack(entity, WeaponType.SWORD);

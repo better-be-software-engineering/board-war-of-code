@@ -6,8 +6,8 @@ import lombok.Getter;
 public enum WeaponType {
     SWORD(1, 8, 0.8, DamageType.PHYSICAL, 2),  // minDamage, maxDamage, hitChance, category, range
     BOW(1, 5, 0.9, DamageType.PHYSICAL, 30),
-    MAGIC(3, 6, 0.7, DamageType.MAGIC, 20),
-    FIREBOLT(6, 12, 0.8, DamageType.MAGIC, 20);
+    MAGIC(3, 6, 0.7, DamageType.MAGIC, 30),
+    FIREBOLT(6, 12, 0.8, DamageType.MAGIC, 30);
 
     private final int minDamage;
     private final int maxDamage;

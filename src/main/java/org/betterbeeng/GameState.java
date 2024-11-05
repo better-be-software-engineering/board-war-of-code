@@ -10,15 +10,23 @@ public class GameState {
 	List<Entity> teamBEntities;
 
 	public List<Entity> getEnemies(Entity entity) {
-		if (teamAEntities.contains(entity)) {
+		return getEnemies(entity.getTeamId());
+	}
+
+	public List<Entity> getFriends(Entity entity) {
+		return getFriends(entity.getTeamId());
+	}
+
+	public List<Entity> getEnemies(int teamId) {
+		if (teamId == 1) {
 			return teamBEntities;
 		} else {
 			return teamAEntities;
 		}
 	}
 
-	public List<Entity> getFriends(Entity entity) {
-		if (teamAEntities.contains(entity)) {
+	public List<Entity> getFriends(int teamId) {
+		if (teamId == 1) {
 			return teamAEntities;
 		} else {
 			return teamBEntities;

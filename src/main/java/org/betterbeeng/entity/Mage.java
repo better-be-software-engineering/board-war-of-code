@@ -13,11 +13,11 @@ public class Mage extends Entity {
 
     public int heal(Entity entity) {
         if (!entity.isAlive()) {
-            System.out.printf(this + " cannot heal a dead entity " + entity);
+            System.out.println(this + " cannot heal a dead entity " + entity);
             return 0;
         }
         if (mana < 20) {
-            System.out.printf("Not enough mana to heal " + entity + " with " + this);
+            System.out.println("Not enough mana to heal " + entity + " with " + this);
             return 0;
         }
         int healingPoints = (int) (Math.random() * 4) + 5;
@@ -28,11 +28,11 @@ public class Mage extends Entity {
 
     public int bolt(Entity entity) {
         if (!entity.isAlive()) {
-            System.out.printf(this + " cannot attack a dead entity " + entity);
+            System.out.println(this + " cannot attack a dead entity " + entity);
             return 0;
         }
         if (mana < 30) {
-            System.out.printf("Not enough mana to attack " + entity + " with " + this);
+            System.out.println("Not enough mana to attack " + entity + " with " + this);
             return 0;
         }
         mana -= 30;

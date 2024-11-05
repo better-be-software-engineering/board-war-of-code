@@ -1,18 +1,26 @@
 package org.betterbeeng.player;
 
 import java.util.Comparator;
-import java.util.stream.Collectors;
-import org.betterbeeng.GameState;
-import org.betterbeeng.entity.Entity;
-import org.betterbeeng.entity.Warrior;
-import org.betterbeeng.entity.Mage;
-import org.betterbeeng.entity.Archer;
-
 import java.util.List;
 import java.util.Random;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.betterbeeng.GameState;
+import org.betterbeeng.entity.Archer;
+import org.betterbeeng.entity.Entity;
+import org.betterbeeng.entity.Mage;
+import org.betterbeeng.entity.Warrior;
 
+@RequiredArgsConstructor
 public class AiPlayer implements Player {
+	@Getter
+	private final int teamId;
 	private Random random = new Random();
+
+	@Override
+	public void turnStarts(GameState gameState) {
+		// Do nothing
+	}
 
 	@Override
 	public MoveDecision decideMove(GameState gameState, Entity entity) {
@@ -23,7 +31,7 @@ public class AiPlayer implements Player {
 		int targetX = entity.getX();
 		int targetY = entity.getY();
 
-		boolean[][] occupied = new boolean[31][31];
+		boolean[][] occupied = new boolean[81][81];
 		for (Entity e : gameState.getAllEntities()) {
 			occupied[e.getX()][e.getY()] = true;
 		}
